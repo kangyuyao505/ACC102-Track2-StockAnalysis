@@ -1,151 +1,91 @@
-# ACC102-Track2-StockAnalysis
-XJTLU ACC102 Python Data Project
+US Stock Daily Data Analysis Tool
 
-# US Stock Daily Data Analysis Tool
+## Overview
 
-## 📊 Overview
+This is a Python-based stock analysis tool built in Jupyter Notebook that retrieves daily trading data from the WRDS database. Users can input two stock tickers to fetch their 2023 daily data and perform comprehensive comparative analysis.
 
-This tool provides a comprehensive analysis of daily stock data for US-listed companies. It allows users to compare two stocks by analyzing their 2023 daily performance, including cumulative returns, volatility, monthly returns, and market capitalization trends.
+## Key Features
 
-## 🚀 Features
+### 1. Data Retrieval
+- Connect to WRDS database
+- Query company information (including PERMNO) by ticker symbol
+- Fetch full-year 2023 daily trading data
 
-- **Ticker-Based Analysis**: Simply enter stock tickers (e.g., AAPL, TSLA, NVDA) - no need to know permno
-- **Automatic Data Retrieval**: Fetches daily price, return, and shares outstanding data from WRDS CRSP database
-- **Comprehensive Metrics**:
-  - Cumulative returns (annualized)
-  - 20-day rolling volatility (annualized)
-  - Maximum drawdown
-  - Monthly average returns
-  - Market capitalization trends
-- **Visual Output**: Generates a 4-in-1 comparison chart
-- **Data Export**: Saves daily data and summary statistics to CSV files
+### 2. Calculated Metrics
 
-## 📋 Prerequisites
+| Metric | Description |
+|--------|-------------|
+| Cumulative Return | Based on daily returns |
+| 20-Day Rolling Volatility | Annualized (×√252) |
+| Maximum Drawdown | Key risk indicator |
+| Market Cap | Price × Shares Outstanding (in millions USD) |
 
-### Required Python Packages
+### 3. Visualization
 
-```bash
-pip install wrds pandas matplotlib numpy
-WRDS Account
-You need a WRDS account with access to the CRSP database. Sign up at https://wrds-www.wharton.upenn.edu
+The tool generates a **4-in-1 comparison chart**:
 
-📁 File Structure
-text
-├── META_2023_daily.csv          # Daily data for the first ticker
-├── NVDA_2023_daily.csv          # Daily data for the second ticker  
-├── META_vs_NVDA_summary.csv     # Summary statistics
-└── META_vs_NVDA_comparison.png  # Comparison chart
+1. **Cumulative Return Comparison** - Full-year performance trend
+2. **20-Day Rolling Volatility** - Compare stock volatility patterns
+3. **Monthly Average Return** - Bar chart comparing monthly performance
+4. **Market Cap Change** - Market capitalization trends over time
 
-💻 Usage
-Step-by-Step Instructions
-Step 1: Import Libraries and Connect to WRDS
-python
-import wrds
-import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
+### 4. Output Files
 
-conn = wrds.Connection()
-Step 2: Define Core Functions
-Run the function definitions for:
+| Filename | Content |
+|----------|---------|
+| `{TICKER}_2023_daily.csv` | Individual daily stock data |
+| `{TICKER1}_vs_{TICKER2}_summary.csv` | Core statistical summary |
+| `{TICKER1}_vs_{TICKER2}_comparison.png` | Comparison chart image |
 
-get_company_info_by_ticker() - Retrieves company information using ticker symbol
+## Technology Stack
 
-get_daily_data() - Fetches and processes daily data
+- **Data Source**: WRDS CRSP Database
+- **Core Libraries**:
+  - `wrds` - Database connection
+  - `pandas` - Data processing
+  - `matplotlib` - Data visualization
+  - `numpy` - Numerical computing
 
-plot_comparison() - Generates the comparison charts
+## Example Results (NVDA vs META)
 
-Step 3: Enter Tickers
-python
-ticker1 = input("Enter the first stock ticker: ").strip().upper()
-ticker2 = input("Enter the second stock ticker: ").strip().upper()
-Step 4-5: Data Retrieval
-The tool automatically:
+### 2023 Key Metrics Comparison
 
-Looks up company information
+| Metric | NVDA | META |
+|--------|------|------|
+| Cumulative Return | +239.02% | +194.13% |
+| Annualized Volatility | 45.23% | 36.82% |
+| Maximum Drawdown | -18.29% | -12.97% |
+| Trading Days | 250 | 250 |
 
-Retrieves daily data for 2023
+### Key Findings
 
-Calculates cumulative returns and volatility
+1. **Performance**: Both NVDA and META delivered strong returns in 2023, with approximately 239% and 194% cumulative returns respectively
 
-Step 6-8: Analysis and Output
-Calculates summary statistics
+2. **Risk Profile**: NVDA exhibited higher volatility (45.23%) compared to META (36.82%), indicating greater risk exposure
 
-Generates comparison charts
+3. **Drawdown Control**: META demonstrated better downside protection (-12.97% vs -18.29%)
 
-Saves data to CSV files
+## Execution Flow
 
-📊 Output Charts
-The tool generates four charts in a 2×2 layout:
+```
+1. Connect to WRDS Database
+   ↓
+2. Input Two Stock Tickers
+   ↓
+3. Query Company Information (with fuzzy search support)
+   ↓
+4. Retrieve 2023 Daily Data
+   ↓
+5. Calculate Statistical Metrics
+   ↓
+6. Generate Comparison Charts
+   ↓
+7. Export CSV Files and Chart Images
+```
 
-Cumulative Return Comparison - Shows the total return growth throughout 2023
+## Important Notes
 
-20-Day Rolling Volatility - Displays annualized volatility trends
-
-Monthly Average Returns - Compares average returns by month
-
-Market Capitalization - Shows market cap changes over time
-
-📈 Sample Output
-Summary Statistics Example (META vs NVDA)
-Metric	META	NVDA
-2023 Cumulative Return (%)	194.13	239.02
-Average Annualized Volatility (%)	36.82	45.23
-Maximum Drawdown (%)	-12.97	-18.29
-Number of Trading Days	250	250
-Sample Chart Output
-https://META_vs_NVDA_comparison.png
-
-🔧 Supported Tickers
-Common supported tickers include:
-
-Company	Ticker	Company	Ticker
-Apple	AAPL	Microsoft	MSFT
-Tesla	TSLA	NVIDIA	NVDA
-Amazon	AMZN	Meta	META
-Google	GOOGL	Netflix	NFLX
-AMD	AMD	Intel	INTC
-IBM	IBM	Oracle	ORCL
-⚠️ Notes
-The tool uses a pre-defined permno mapping for reliable ticker lookup
-
-Data is only available for 2023 (can be modified in queries)
-
-WRDS connection requires authentication
-
-The fuzzy search feature helps find similar tickers if exact match fails
-
-🐛 Troubleshooting
-Common Issues and Solutions
-"Ticker not found"
-
-Check if the ticker is spelled correctly
-
-Try using uppercase letters
-
-Some tickers may have changed (e.g., META used to be FB)
-
-Connection Issues
-
-Ensure you have a valid WRDS account
-
-Check your internet connection
-
-Verify WRDS server status
-
-No Data Returned
-
-Confirm the company was publicly traded in 2023
-
-Check if the ticker is active in CRSP database
-
-📝 License
-This tool is for educational and research purposes. Users must comply with WRDS data usage policies.
-
-👥 Author
-Developed for financial data analysis and research purposes.
-
-🙏 Acknowledgments
-WRDS for providing access to CRSP database
-
-CRSP for maintaining comprehensive stock data
+- Valid WRDS account credentials required
+- Setting up a `.pgpass` file is recommended for simplified login
+- Ticker symbols are case-insensitive (automatically converted to uppercase)
+- Fuzzy search will suggest similar tickers if an exact match is not found
